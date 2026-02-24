@@ -66,7 +66,11 @@ public sealed class ExcelTemplateImporter
     {
         var trimmed = value.Trim();
         if (string.IsNullOrWhiteSpace(trimmed)) return null;
-        return trimmed.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var tokens = trimmed.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries)
+            .Select(x => x.Trim())
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .ToArray();
+        return tokens.Length == 0 ? null : tokens;
     }
 
     private static bool ToBool(string value)

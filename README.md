@@ -1,6 +1,8 @@
 # Windows Pad 离线电子表单客户端（WPF）
 
-本项目现已提供**可运行代码骨架**（.NET 6 + WPF + SQLite），用于工业电子点检表单离线客户端开发。
+本项目现已提供**可运行代码骨架**（.NET Framework 4.8 + WPF + SQLite），用于工业电子点检表单离线客户端开发。
+
+> 运行目标已调整为 **Windows 7 SP1 及以上**（建议 Win10/Win11 作为开发环境，Win7 作为现场终端运行环境）。
 
 ## 当前已实现
 
@@ -29,7 +31,10 @@
 
 ## Windows 构建（推荐）
 
-由于 `Client.App` 使用 WPF（`Microsoft.NET.Sdk.WindowsDesktop`），请在 Windows 10/11 环境构建与运行。
+由于 `Client.App` 使用 WPF（`Microsoft.NET.Sdk.WindowsDesktop`），请在 Windows 环境构建。
+
+- 运行环境：Windows 7 SP1 / Windows 10 / Windows 11
+- 目标框架：.NET Framework 4.8（Win7 端请预装 .NET Framework 4.8 Runtime）
 
 - 本地构建脚本：`scripts/windows/build.ps1`
 - Windows CI：`.github/workflows/windows-build.yml`

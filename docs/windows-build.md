@@ -2,11 +2,15 @@
 
 本项目的 UI 使用 WPF（`Microsoft.NET.Sdk.WindowsDesktop`），**必须在 Windows 环境构建/运行**。
 
+当前发布目标支持 **Windows 7 SP1**（部署运行）到 Windows 11。
+
 ## 1. 环境要求
 
-- Windows 10 / Windows 11
-- .NET SDK 8.0（可同时构建 net6.0-windows 项目）
-- Visual Studio 2022（推荐安装“桌面开发 - .NET”工作负载）
+- 构建机：Windows 10 / Windows 11
+- 运行机：Windows 7 SP1 / Windows 10 / Windows 11
+- .NET Framework 4.8 Developer Pack（构建）
+- .NET Framework 4.8 Runtime（运行，Win7 需预装）
+- Visual Studio 2019/2022（推荐安装“桌面开发 - .NET”工作负载）
 
 ## 2. 命令行构建
 
@@ -30,4 +34,4 @@ cd <repo-root>
 
 - `.github/workflows/windows-build.yml`
 
-该工作流会在 `windows-latest` 上执行 restore + build，确保 WPF 项目可在目标平台持续验证。
+该工作流会在 `windows-latest` 上执行 restore + build，确保 WPF 项目持续可构建；产物可部署到 Win7 SP1（安装 .NET Framework 4.8 Runtime 后）。
