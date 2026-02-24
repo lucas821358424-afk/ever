@@ -1,0 +1,26 @@
+name: windows-build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "work", "main" ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore Ever.Client.sln
+
+      - name: Build
+        run: dotnet build Ever.Client.sln --configuration Release --no-restore
