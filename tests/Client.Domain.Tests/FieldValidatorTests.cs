@@ -37,4 +37,26 @@ public class FieldValidatorTests
         Assert.True(result.IsValid);
         Assert.Null(result.Message);
     }
+
+    [Fact]
+    public void Validate_ShouldFail_WhenNumberCannotParse()
+    {
+        var field = new FormField("f4", "电流", FieldType.Number, 0, 0, 10, 10, null, null, new ValidationRule());
+
+        var result = FieldValidator.Validate(field, "abc");
+
+        Assert.False(result.IsValid);
+        Assert.Contains("数值", result.Message);
+    }
+
+    [Fact]
+    public void Validate_ShouldFail_WhenRegexDoesNotMatch()
+    {
+        var field = new FormField("f5", "工号", FieldType.Text, 0, 0, 10, 10, null, null, new ValidationRule(Regex: "^[A-Z]{2}\\d{4}$"));
+
+        var result = FieldValidator.Validate(field, "ab1234");
+
+        Assert.False(result.IsValid);
+        Assert.Contains("格式", result.Message);
+    }
 }

@@ -42,4 +42,27 @@ public class SqliteStoreTests
             }
         }
     }
+
+    [Fact]
+    public void LoadTemplate_ShouldReturnNull_WhenTemplateNotExists()
+    {
+        var dbPath = Path.Combine(Path.GetTempPath(), $"ever-test-{Guid.NewGuid():N}.db");
+        try
+        {
+            var store = new SqliteStore(dbPath);
+            store.Initialize();
+
+            var loaded = store.LoadTemplate("missing-template");
+
+            Assert.Null(loaded);
+        }
+        finally
+        {
+            if (File.Exists(dbPath))
+            {
+                File.Delete(dbPath);
+            }
+        }
+    }
+
 }
