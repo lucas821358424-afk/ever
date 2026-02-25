@@ -10,6 +10,9 @@ namespace EverInspection.Client.Models
 
         public int RowIndex { get; set; }
         public string Process { get; set; }
+        public string ProcessGroup { get; set; }
+        public string ProcessDisplay { get; set; }
+        public bool IsProcessContinuation { get; set; }
         public string CheckItem { get; set; }
         public string Unit { get; set; }
         public decimal? Min { get; set; }

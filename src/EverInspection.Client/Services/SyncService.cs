@@ -1,16 +1,17 @@
 using System;
-using EverInspection.Client.Models;
 
 namespace EverInspection.Client.Services
 {
     public sealed class SyncService
     {
         private readonly FormService _formService;
+        private readonly TemplateService _templateService;
         private readonly LocalDbService _db;
 
-        public SyncService(FormService formService, LocalDbService db)
+        public SyncService(FormService formService, TemplateService templateService, LocalDbService db)
         {
             _formService = formService;
+            _templateService = templateService;
             _db = db;
         }
 
@@ -32,6 +33,13 @@ namespace EverInspection.Client.Services
 
             WriteLog("Upload", "Success", $"成功上传 {count} 条记录");
             return count;
+        }
+
+        public int SyncTemplateConfigs(bool networkAvailable)
+        {
+            var updated = _templateService.SyncTemplateConfigsFromOracle(networkAvailable);
+            WriteLog("Template", "Success", $"模板配置更新 {updated} 个");
+            return updated;
         }
 
         private void WriteLog(string type, string result, string message)

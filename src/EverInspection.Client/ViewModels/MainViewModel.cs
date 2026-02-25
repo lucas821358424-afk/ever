@@ -31,7 +31,7 @@ namespace EverInspection.Client.ViewModels
             var template = new TemplateService(db);
             var permission = new PermissionService(db);
             var form = new FormService(db);
-            var sync = new SyncService(form, db);
+            var sync = new SyncService(form, template, db);
 
             var main = new MainViewModel();
             main.DynamicForm = new DynamicFormViewModel(form, template);

@@ -32,3 +32,10 @@ WPF + .NET Framework 4.6 的制造点检客户端示例实现，支持：
 
 - 默认路径：`%LOCALAPPDATA%\EverInspection\ever-inspection.db`
 - 可通过环境变量 `EVER_INSPECTION_DB_PATH` 指定完整数据库文件路径（例如 `D:\Ever\ever-inspection.db`）。
+
+## 模板配置与联机更新
+
+- 本地 SQLite 新增模板配置表：`template_header_configs`、`template_row_configs`，用于存储每个表单版本的表头字段与点检行配置。
+- `Rows` 配置支持按制程自动分组显示（同制程连续行自动空白显示，形成合并单元格视觉效果）。
+- 支持按模板开关控制 `Panel ID` 是否显示/必填；点检日期和时间自动带入当前值。
+- 有网场景可通过 `SyncService.SyncTemplateConfigs(true)` 触发模板配置更新（当前示例从 `Resources/oracle-template-sync.json` 读取，模拟 Oracle 服务端下发）。

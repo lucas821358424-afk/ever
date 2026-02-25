@@ -2,12 +2,47 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Height="Auto" Width="Auto">
-    <DockPanel Margin="20">
-        <StackPanel DockPanel.Dock="Top" Margin="0,0,0,10">
-            <TextBlock Text="{Binding TemplateName}" FontSize="20" FontWeight="Bold" />
-            <TextBlock Text="{Binding TemplateVersion, StringFormat=版本: {0}}" FontSize="14"/>
-            <CheckBox Content="允许提交超规格数据" IsChecked="{Binding AllowSubmitOutOfSpec}" Margin="0,6,0,0" />
-        </StackPanel>
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </UserControl.Resources>
+    <DockPanel Margin="14">
+        <Border DockPanel.Dock="Top" Background="#CFE8F7" BorderBrush="#3C3C3C" BorderThickness="1" Padding="10" Margin="0,0,0,10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="220"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="EQ ID" VerticalAlignment="Center" FontWeight="Bold"/>
+                <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding EqIdOptions}" SelectedItem="{Binding SelectedEqId}" Height="30"/>
+
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="机种" VerticalAlignment="Center" FontWeight="Bold"
+                           Visibility="{Binding ShowMachineType, Converter={StaticResource BoolToVis}}"/>
+                <ComboBox Grid.Row="0" Grid.Column="3" ItemsSource="{Binding MachineTypeOptions}" SelectedItem="{Binding SelectedMachineType}" Height="30"
+                          Visibility="{Binding ShowMachineType, Converter={StaticResource BoolToVis}}"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="点检日期" VerticalAlignment="Center" FontWeight="Bold"/>
+                <DatePicker Grid.Row="1" Grid.Column="1" SelectedDate="{Binding InspectionDate}" IsEnabled="False" Height="30"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="时间" VerticalAlignment="Center" FontWeight="Bold"/>
+                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding InspectionTime}" IsReadOnly="True" Height="30"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Panel ID" VerticalAlignment="Center" FontWeight="Bold"
+                           Visibility="{Binding ShowPanelId, Converter={StaticResource BoolToVis}}"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding PanelId, UpdateSourceTrigger=PropertyChanged}" Height="30"
+                         Visibility="{Binding ShowPanelId, Converter={StaticResource BoolToVis}}"/>
+
+                <CheckBox Grid.Row="2" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center"
+                          Content="允许提交超规格数据" IsChecked="{Binding AllowSubmitOutOfSpec}"/>
+            </Grid>
+        </Border>
 
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,10,0,0">
             <Button Content="保存草稿" Width="140" Height="42" Command="{Binding SaveDraftCommand}"/>
@@ -15,9 +50,15 @@
             <TextBlock Text="{Binding SaveHint}" VerticalAlignment="Center" Margin="16,0,0,0" />
         </StackPanel>
 
+        <StackPanel DockPanel.Dock="Top" Margin="0,0,0,8">
+            <TextBlock Text="{Binding TemplateName}" FontSize="20" FontWeight="Bold" />
+            <TextBlock Text="{Binding TemplateVersion, StringFormat=版本: {0}}" FontSize="14"/>
+        </StackPanel>
+
         <DataGrid ItemsSource="{Binding Rows}" AutoGenerateColumns="False" CanUserAddRows="False" GridLinesVisibility="All" HeadersVisibility="Column" FontSize="15">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="制程" Binding="{Binding Process}" IsReadOnly="True" Width="*"/>
+                <DataGridTextColumn Header="制程" Binding="{Binding ProcessDisplay}" IsReadOnly="True" Width="*"/>
+                <DataGridTextColumn Header="分类" Binding="{Binding ProcessGroup}" IsReadOnly="True" Width="*"/>
                 <DataGridTextColumn Header="点检项目" Binding="{Binding CheckItem}" IsReadOnly="True" Width="2*"/>
                 <DataGridTextColumn Header="单位" Binding="{Binding Unit}" IsReadOnly="True" Width="*"/>
                 <DataGridTextColumn Header="Min" Binding="{Binding Min}" IsReadOnly="True" Width="*"/>

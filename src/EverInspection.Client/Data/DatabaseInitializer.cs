@@ -37,6 +37,31 @@ CREATE TABLE IF NOT EXISTS templates (
     PRIMARY KEY(template_id, version)
 );
 
+CREATE TABLE IF NOT EXISTS template_header_configs (
+    template_id TEXT NOT NULL,
+    template_version TEXT NOT NULL,
+    key_name TEXT NOT NULL,
+    display_name TEXT NOT NULL,
+    required INTEGER NOT NULL,
+    sort_no INTEGER NOT NULL,
+    PRIMARY KEY(template_id, template_version, key_name)
+);
+
+CREATE TABLE IF NOT EXISTS template_row_configs (
+    template_id TEXT NOT NULL,
+    template_version TEXT NOT NULL,
+    row_no INTEGER NOT NULL,
+    process_name TEXT NOT NULL,
+    process_group TEXT,
+    item_name TEXT NOT NULL,
+    unit TEXT,
+    min_value REAL,
+    max_value REAL,
+    required INTEGER NOT NULL,
+    field_type INTEGER NOT NULL,
+    PRIMARY KEY(template_id, template_version, row_no)
+);
+
 CREATE TABLE IF NOT EXISTS form_instances (
     form_instance_id TEXT PRIMARY KEY,
     template_id TEXT NOT NULL,
@@ -44,6 +69,7 @@ CREATE TABLE IF NOT EXISTS form_instances (
     operator_id TEXT NOT NULL,
     status INTEGER NOT NULL,
     has_out_of_spec INTEGER NOT NULL,
+    header_json TEXT NOT NULL DEFAULT '{}',
     values_json TEXT NOT NULL,
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
@@ -57,6 +83,32 @@ CREATE TABLE IF NOT EXISTS sync_logs (
     message TEXT
 );";
                 cmd.ExecuteNonQuery();
+            }
+
+            EnsureColumn(connection, "form_instances", "header_json", "TEXT NOT NULL DEFAULT '{}' ");
+        }
+
+        private static void EnsureColumn(SQLiteConnection connection, string tableName, string columnName, string typeSql)
+        {
+            using (var check = connection.CreateCommand())
+            {
+                check.CommandText = "PRAGMA table_info(" + tableName + ")";
+                using (var reader = check.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader[1].ToString() == columnName)
+                        {
+                            return;
+                        }
+                    }
+                }
+            }
+
+            using (var alter = connection.CreateCommand())
+            {
+                alter.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + typeSql;
+                alter.ExecuteNonQuery();
             }
         }
     }

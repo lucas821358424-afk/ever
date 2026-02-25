@@ -13,6 +13,7 @@ namespace EverInspection.Client.Models
         public bool HasOutOfSpec { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public Dictionary<string, string> HeaderValues { get; set; } = new Dictionary<string, string>();
         public List<FormCellValue> Values { get; set; } = new List<FormCellValue>();
     }
 

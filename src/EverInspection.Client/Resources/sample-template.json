@@ -1,20 +1,28 @@
 {
   "TemplateId": "TEMP-001",
-  "TemplateName": "设备点检日报",
-  "Version": "1.0.0",
-  "UpdatedAt": "2026-01-01T08:00:00",
+  "TemplateName": "模组二厂 Bonding 线状况检查记录表",
+  "Version": "1.1.0",
+  "UpdatedAt": "2026-02-25T08:00:00",
   "EnablePanelId": true,
   "EnableMachineType": true,
+  "AutoFillDateTime": true,
+  "EqIdOptions": ["BG-01", "BG-02", "BG-03"],
+  "MachineTypeOptions": ["A100", "A200", "B100"],
   "HeaderFields": [
     { "Key": "EqId", "DisplayName": "EQ ID", "Required": true },
     { "Key": "PanelId", "DisplayName": "Panel ID", "Required": false },
     { "Key": "MachineType", "DisplayName": "机种", "Required": true },
-    { "Key": "Operator", "DisplayName": "操作员", "Required": true }
+    { "Key": "InspectionDate", "DisplayName": "点检日期", "Required": true },
+    { "Key": "InspectionTime", "DisplayName": "时间", "Required": true }
   ],
   "Rows": [
-    { "Process": "涂布", "ItemName": "温度", "Unit": "℃", "Min": 20, "Max": 25, "Required": true, "FieldType": 0 },
-    { "Process": "涂布", "ItemName": "湿度", "Unit": "%", "Min": 40, "Max": 60, "Required": true, "FieldType": 0 },
-    { "Process": "烘烤", "ItemName": "炉温", "Unit": "℃", "Min": 180, "Max": 210, "Required": true, "FieldType": 0 },
-    { "Process": "烘烤", "ItemName": "压力", "Unit": "kPa", "Min": 3, "Max": 6, "Required": true, "FieldType": 0 }
+    { "Process": "COG", "ProcessGroup": "精度", "ItemName": "X-L", "Unit": "um", "Min": -10, "Max": 10, "Required": true, "FieldType": 0 },
+    { "Process": "COG", "ProcessGroup": "精度", "ItemName": "X-R", "Unit": "um", "Min": -10, "Max": 10, "Required": true, "FieldType": 0 },
+    { "Process": "COG", "ProcessGroup": "精度", "ItemName": "Y-L", "Unit": "um", "Min": -10, "Max": 10, "Required": true, "FieldType": 0 },
+    { "Process": "COG", "ProcessGroup": "精度", "ItemName": "Y-R", "Unit": "um", "Min": -10, "Max": 10, "Required": true, "FieldType": 0 },
+    { "Process": "COF", "ProcessGroup": "精度", "ItemName": "COF无导电粒子聚集现象", "Unit": "/", "Required": true, "FieldType": 1 },
+    { "Process": "COF", "ProcessGroup": "精度", "ItemName": "导电粒子颗粒感明显", "Unit": "/", "Required": true, "FieldType": 1 },
+    { "Process": "COF", "ProcessGroup": "精度", "ItemName": "粒子捕捉数", "Unit": "颗", "Min": 0, "Max": 5, "Required": true, "FieldType": 0 },
+    { "Process": "外观", "ProcessGroup": "检查", "ItemName": "点灯测试", "Unit": "/", "Required": true, "FieldType": 1 }
   ]
 }

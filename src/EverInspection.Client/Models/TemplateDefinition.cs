@@ -11,6 +11,9 @@ namespace EverInspection.Client.Models
         public DateTime UpdatedAt { get; set; }
         public bool EnablePanelId { get; set; }
         public bool EnableMachineType { get; set; }
+        public bool AutoFillDateTime { get; set; } = true;
+        public List<string> EqIdOptions { get; set; } = new List<string>();
+        public List<string> MachineTypeOptions { get; set; } = new List<string>();
         public List<HeaderFieldDefinition> HeaderFields { get; set; } = new List<HeaderFieldDefinition>();
         public List<TemplateRowDefinition> Rows { get; set; } = new List<TemplateRowDefinition>();
     }
@@ -25,6 +28,7 @@ namespace EverInspection.Client.Models
     public sealed class TemplateRowDefinition
     {
         public string Process { get; set; }
+        public string ProcessGroup { get; set; }
         public string ItemName { get; set; }
         public string Unit { get; set; }
         public decimal? Min { get; set; }

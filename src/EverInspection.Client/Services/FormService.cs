@@ -17,7 +17,7 @@ namespace EverInspection.Client.Services
             _db = db;
         }
 
-        public FormInstance CreateDraft(string templateId, string templateVersion, string userId, ObservableCollection<DynamicRowItem> rows)
+        public FormInstance CreateDraft(string templateId, string templateVersion, string userId, IDictionary<string, string> headerValues, ObservableCollection<DynamicRowItem> rows)
         {
             var instance = new FormInstance
             {
@@ -29,6 +29,7 @@ namespace EverInspection.Client.Services
                 HasOutOfSpec = rows.Any(x => x.IsOutOfSpec),
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
+                HeaderValues = headerValues == null ? new Dictionary<string, string>() : new Dictionary<string, string>(headerValues),
                 Values = rows.Select(ToCell).ToList()
             };
             Save(instance);
@@ -41,14 +42,15 @@ namespace EverInspection.Client.Services
             using (var cmd = conn.CreateCommand())
             {
                 cmd.CommandText = @"INSERT OR REPLACE INTO form_instances
-(form_instance_id, template_id, template_version, operator_id, status, has_out_of_spec, values_json, created_at, updated_at)
-VALUES(@id,@templateId,@version,@operator,@status,@outOfSpec,@values,@created,@updated)";
+(form_instance_id, template_id, template_version, operator_id, status, has_out_of_spec, header_json, values_json, created_at, updated_at)
+VALUES(@id,@templateId,@version,@operator,@status,@outOfSpec,@header,@values,@created,@updated)";
                 cmd.Parameters.AddWithValue("@id", instance.FormInstanceId);
                 cmd.Parameters.AddWithValue("@templateId", instance.TemplateId);
                 cmd.Parameters.AddWithValue("@version", instance.TemplateVersion);
                 cmd.Parameters.AddWithValue("@operator", instance.OperatorId);
                 cmd.Parameters.AddWithValue("@status", (int)instance.Status);
                 cmd.Parameters.AddWithValue("@outOfSpec", instance.HasOutOfSpec ? 1 : 0);
+                cmd.Parameters.AddWithValue("@header", JsonConvert.SerializeObject(instance.HeaderValues ?? new Dictionary<string, string>()));
                 cmd.Parameters.AddWithValue("@values", JsonConvert.SerializeObject(instance.Values));
                 cmd.Parameters.AddWithValue("@created", instance.CreatedAt.ToString("o"));
                 cmd.Parameters.AddWithValue("@updated", DateTime.Now.ToString("o"));
@@ -62,7 +64,7 @@ VALUES(@id,@templateId,@version,@operator,@status,@outOfSpec,@values,@created,@u
             using (var conn = _db.CreateConnection())
             using (var cmd = conn.CreateCommand())
             {
-                cmd.CommandText = "SELECT form_instance_id, template_id, template_version, operator_id, status, has_out_of_spec, values_json, created_at, updated_at FROM form_instances WHERE operator_id=@userId";
+                cmd.CommandText = "SELECT form_instance_id, template_id, template_version, operator_id, status, has_out_of_spec, header_json, values_json, created_at, updated_at FROM form_instances WHERE operator_id=@userId";
                 if (!string.IsNullOrWhiteSpace(templateId))
                 {
                     cmd.CommandText += " AND template_id=@templateId";
@@ -83,9 +85,10 @@ VALUES(@id,@templateId,@version,@operator,@status,@outOfSpec,@values,@created,@u
                             OperatorId = reader[3].ToString(),
                             Status = (FormStatus)reader.GetInt32(4),
                             HasOutOfSpec = reader.GetInt32(5) == 1,
-                            Values = JsonConvert.DeserializeObject<List<FormCellValue>>(reader[6].ToString()) ?? new List<FormCellValue>(),
-                            CreatedAt = DateTime.Parse(reader[7].ToString()),
-                            UpdatedAt = DateTime.Parse(reader[8].ToString())
+                            HeaderValues = JsonConvert.DeserializeObject<Dictionary<string, string>>(reader[6].ToString()) ?? new Dictionary<string, string>(),
+                            Values = JsonConvert.DeserializeObject<List<FormCellValue>>(reader[7].ToString()) ?? new List<FormCellValue>(),
+                            CreatedAt = DateTime.Parse(reader[8].ToString()),
+                            UpdatedAt = DateTime.Parse(reader[9].ToString())
                         });
                     }
                 }
@@ -137,7 +140,7 @@ VALUES(@id,@templateId,@version,@operator,@status,@outOfSpec,@values,@created,@u
             using (var conn = _db.CreateConnection())
             using (var cmd = conn.CreateCommand())
             {
-                cmd.CommandText = "SELECT form_instance_id, template_id, template_version, operator_id, status, has_out_of_spec, values_json, created_at, updated_at FROM form_instances WHERE status=@status";
+                cmd.CommandText = "SELECT form_instance_id, template_id, template_version, operator_id, status, has_out_of_spec, header_json, values_json, created_at, updated_at FROM form_instances WHERE status=@status";
                 cmd.Parameters.AddWithValue("@status", (int)status);
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -151,9 +154,10 @@ VALUES(@id,@templateId,@version,@operator,@status,@outOfSpec,@values,@created,@u
                             OperatorId = reader[3].ToString(),
                             Status = (FormStatus)reader.GetInt32(4),
                             HasOutOfSpec = reader.GetInt32(5) == 1,
-                            Values = JsonConvert.DeserializeObject<List<FormCellValue>>(reader[6].ToString()) ?? new List<FormCellValue>(),
-                            CreatedAt = DateTime.Parse(reader[7].ToString()),
-                            UpdatedAt = DateTime.Parse(reader[8].ToString())
+                            HeaderValues = JsonConvert.DeserializeObject<Dictionary<string, string>>(reader[6].ToString()) ?? new Dictionary<string, string>(),
+                            Values = JsonConvert.DeserializeObject<List<FormCellValue>>(reader[7].ToString()) ?? new List<FormCellValue>(),
+                            CreatedAt = DateTime.Parse(reader[8].ToString()),
+                            UpdatedAt = DateTime.Parse(reader[9].ToString())
                         });
                     }
                 }
