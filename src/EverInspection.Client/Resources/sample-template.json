@@ -1,0 +1,28 @@
+{
+  "TemplateId": "TEMP-001",
+  "TemplateName": "模组二厂 Bonding 线状况检查记录表",
+  "Version": "1.1.0",
+  "UpdatedAt": "2026-02-25T08:00:00",
+  "EnablePanelId": true,
+  "EnableMachineType": true,
+  "AutoFillDateTime": true,
+  "EqIdOptions": ["BG-01", "BG-02", "BG-03"],
+  "MachineTypeOptions": ["A100", "A200", "B100"],
+  "HeaderFields": [
+    { "Key": "EqId", "DisplayName": "EQ ID", "Required": true },
+    { "Key": "PanelId", "DisplayName": "Panel ID", "Required": false },
+    { "Key": "MachineType", "DisplayName": "机种", "Required": true },
+    { "Key": "InspectionDate", "DisplayName": "点检日期", "Required": true },
+    { "Key": "InspectionTime", "DisplayName": "时间", "Required": true }
+  ],
+  "Rows": [
+    { "Process": "COG", "ProcessGroup": "精度", "ItemName": "X-L", "Unit": "um", "Min": -10, "Max": 10, "Required": true, "FieldType": 0 },
+    { "Process": "COG", "ProcessGroup": "精度", "ItemName": "X-R", "Unit": "um", "Min": -10, "Max": 10, "Required": true, "FieldType": 0 },
+    { "Process": "COG", "ProcessGroup": "精度", "ItemName": "Y-L", "Unit": "um", "Min": -10, "Max": 10, "Required": true, "FieldType": 0 },
+    { "Process": "COG", "ProcessGroup": "精度", "ItemName": "Y-R", "Unit": "um", "Min": -10, "Max": 10, "Required": true, "FieldType": 0 },
+    { "Process": "COF", "ProcessGroup": "精度", "ItemName": "COF无导电粒子聚集现象", "Unit": "/", "Required": true, "FieldType": 1 },
+    { "Process": "COF", "ProcessGroup": "精度", "ItemName": "导电粒子颗粒感明显", "Unit": "/", "Required": true, "FieldType": 1 },
+    { "Process": "COF", "ProcessGroup": "精度", "ItemName": "粒子捕捉数", "Unit": "颗", "Min": 0, "Max": 5, "Required": true, "FieldType": 0 },
+    { "Process": "外观", "ProcessGroup": "检查", "ItemName": "点灯测试", "Unit": "/", "Required": true, "FieldType": 1 }
+  ]
+}

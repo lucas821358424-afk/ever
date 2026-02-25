@@ -1,0 +1,38 @@
+<Window x:Class="EverInspection.Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:EverInspection.Client.Views"
+        Title="点检客户端" Height="800" Width="1280" MinWidth="1280" MinHeight="800">
+    <DockPanel>
+        <Border DockPanel.Dock="Top" Background="#2D3E50" Padding="12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="制造现场点检客户端" FontSize="20" Foreground="White" VerticalAlignment="Center" FontWeight="Bold"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="网络:" Foreground="White" Margin="0,0,8,0"/>
+                    <TextBlock Text="{Binding NetworkStatus}" Foreground="White" Margin="0,0,16,0"/>
+                    <TextBlock Text="用户:" Foreground="White" Margin="0,0,8,0"/>
+                    <TextBlock Text="{Binding CurrentUserDisplay}" Foreground="White"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <TabControl>
+            <TabItem Header="登录">
+                <views:LoginView DataContext="{Binding Login}"/>
+            </TabItem>
+            <TabItem Header="表单选择">
+                <views:FormSelectionView DataContext="{Binding FormSelection}"/>
+            </TabItem>
+            <TabItem Header="动态填写">
+                <views:DynamicFormView DataContext="{Binding DynamicForm}"/>
+            </TabItem>
+            <TabItem Header="历史记录">
+                <views:HistoryView DataContext="{Binding History}"/>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>
