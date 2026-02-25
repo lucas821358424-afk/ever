@@ -24,6 +24,7 @@ WPF + .NET Framework 4.6 的制造点检客户端示例实现，支持：
 2. NuGet 还原：`Newtonsoft.Json`、`Stub.System.Data.SQLite.Core.NetFramework`。
 3. 启动项目。
 4. 若提示找不到 `System.Data.SQLite`，请在解决方案根目录执行 `nuget restore EverInspection.sln` 后重新生成。
+5. 若报错 `无法加载 DLL sqlite.interop.dll`，请先清理 `bin/obj` 后重新生成，并确认输出目录下存在 `x86\SQLite.Interop.dll` 与 `x64\SQLite.Interop.dll`。
 
 默认测试账号：`operator01 / 123456`。
 
