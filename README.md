@@ -1,6 +1,6 @@
 # EverInspection Client
 
-WPF + .NET Framework 4.8 的制造点检客户端示例实现，支持：
+WPF + .NET Framework 4.6 的制造点检客户端示例实现，支持：
 
 - 账号登录（首次在线 + 离线登录）
 - 模板驱动动态表单
