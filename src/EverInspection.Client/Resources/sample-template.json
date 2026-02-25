@@ -1,0 +1,20 @@
+{
+  "TemplateId": "TEMP-001",
+  "TemplateName": "设备点检日报",
+  "Version": "1.0.0",
+  "UpdatedAt": "2026-01-01T08:00:00",
+  "EnablePanelId": true,
+  "EnableMachineType": true,
+  "HeaderFields": [
+    { "Key": "EqId", "DisplayName": "EQ ID", "Required": true },
+    { "Key": "PanelId", "DisplayName": "Panel ID", "Required": false },
+    { "Key": "MachineType", "DisplayName": "机种", "Required": true },
+    { "Key": "Operator", "DisplayName": "操作员", "Required": true }
+  ],
+  "Rows": [
+    { "Process": "涂布", "ItemName": "温度", "Unit": "℃", "Min": 20, "Max": 25, "Required": true, "FieldType": 0 },
+    { "Process": "涂布", "ItemName": "湿度", "Unit": "%", "Min": 40, "Max": 60, "Required": true, "FieldType": 0 },
+    { "Process": "烘烤", "ItemName": "炉温", "Unit": "℃", "Min": 180, "Max": 210, "Required": true, "FieldType": 0 },
+    { "Process": "烘烤", "ItemName": "压力", "Unit": "kPa", "Min": 3, "Max": 6, "Required": true, "FieldType": 0 }
+  ]
+}
