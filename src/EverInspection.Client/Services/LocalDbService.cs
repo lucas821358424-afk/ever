@@ -7,14 +7,23 @@ namespace EverInspection.Client.Services
 {
     public sealed class LocalDbService
     {
+        private const string DbFileName = "ever-inspection.db";
+        private const string DbPathEnvName = "EVER_INSPECTION_DB_PATH";
+
         private readonly string _connectionString;
+
+        public string DbPath { get; }
 
         public LocalDbService()
         {
-            var appData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EverInspection");
-            Directory.CreateDirectory(appData);
-            var dbPath = Path.Combine(appData, "ever-inspection.db");
-            _connectionString = $"Data Source={dbPath};Version=3;";
+            DbPath = ResolveDbPath();
+            var dbDirectory = Path.GetDirectoryName(DbPath);
+            if (!string.IsNullOrWhiteSpace(dbDirectory))
+            {
+                Directory.CreateDirectory(dbDirectory);
+            }
+
+            _connectionString = $"Data Source={DbPath};Version=3;";
 
             using (var conn = CreateConnection())
             {
@@ -27,6 +36,18 @@ namespace EverInspection.Client.Services
             var connection = new SQLiteConnection(_connectionString);
             connection.Open();
             return connection;
+        }
+
+        private static string ResolveDbPath()
+        {
+            var fromEnv = Environment.GetEnvironmentVariable(DbPathEnvName);
+            if (!string.IsNullOrWhiteSpace(fromEnv))
+            {
+                return Path.GetFullPath(fromEnv.Trim());
+            }
+
+            var appData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EverInspection");
+            return Path.Combine(appData, DbFileName);
         }
     }
 }

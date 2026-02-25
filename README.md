@@ -26,3 +26,8 @@ WPF + .NET Framework 4.6 的制造点检客户端示例实现，支持：
 4. 若提示找不到 `System.Data.SQLite`，请在解决方案根目录执行 `nuget restore EverInspection.sln` 后重新生成。
 
 默认测试账号：`operator01 / 123456`。
+
+## 本地数据库位置
+
+- 默认路径：`%LOCALAPPDATA%\EverInspection\ever-inspection.db`
+- 可通过环境变量 `EVER_INSPECTION_DB_PATH` 指定完整数据库文件路径（例如 `D:\Ever\ever-inspection.db`）。
